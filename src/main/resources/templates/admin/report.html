@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Attendance Report</title>
+
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/css/bootstrap.min.css">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-md-2 p-0">
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-10 mt-4">
+
+    <h2 class="mb-4">
+        Attendance Report
+    </h2>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <form method="get" th:action="@{/report}">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+                            Start Date
+                        </label>
+
+                        <input
+                                type="date"
+                                name="startDate"
+                                class="form-control">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+                            End Date
+                        </label>
+
+                        <input
+                                type="date"
+                                name="endDate"
+                                class="form-control">
+
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end gap-2 flex-wrap">
+                        <button
+                                type="submit"
+                                class="btn btn-primary me-2">
+
+                            <i class="bi bi-search"></i>
+                            Filter
+
+                        </button>
+
+                        <a href="/dashboard"
+                           class="btn btn-secondary">
+
+                            <i class="bi bi-arrow-clockwise"></i>
+                            Reset
+
+                        </a>
+
+                        <a class="btn btn-success"
+                           th:if="${param.startDate != null and param.endDate != null}"
+                           th:href="@{/attendance/export/excel(
+                           startDate=${param.startDate},
+                           endDate=${param.endDate})}">
+
+                            <i class="bi bi-file-earmark-excel"></i>
+                            Export Excel
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="card shadow-sm mt-4">
+
+            <div class="card-header fw-bold">
+
+                Attendance List
+
+            </div>
+
+            <div class="card-body table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Employee Code</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                        <th>Location</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:if="${#lists.isEmpty(attendanceList)}">
+
+                        <td colspan="7" class="text-center">
+
+                            No data
+
+                        </td>
+
+                    </tr>
+
+                    <tr th:each="attendance : ${attendanceList}">
+
+                        <td th:text="${attendance.employeeCode}"></td>
+                        <td th:text="${attendance.fullName}"></td>
+                        <td th:text="${attendance.attendanceDate}"></td>
+                        <td th:text="${attendance.checkInTime}"></td>
+                        <td th:text="${attendance.checkOutTime}"></td>
+                        <td th:text="${attendance.status}"></td>
+                        <td th:text="${attendance.location}"></td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

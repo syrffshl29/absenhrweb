@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Create Employee</title>
+
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/css/bootstrap.min.css">
+
+</head>
+
+<body class="bg-light">
+
+<div class="d-flex">
+
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- Content -->
+    <div class="container mt-4">
+
+        <h3>Create Employee</h3>
+
+        <div class="card shadow border-0">
+
+            <div class="card-body">
+
+                <form th:action="@{/employees/create}"
+                      th:object="${employee}"
+                      method="post">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Employee Code
+                            </label>
+
+                            <input th:field="*{employeeCode}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{employeeCode}">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input th:field="*{fullName}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{fullName}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Address
+                        </label>
+
+                        <textarea
+                                th:field="*{address}"
+                                class="form-control"
+                                rows="3">
+                        </textarea>
+
+                        <div class="text-danger"
+                             th:if="${#fields.hasErrors('address')}"
+                             th:errors="*{address}">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Email
+                            </label>
+
+                            <input th:field="*{email}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{email}">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Phone
+                            </label>
+
+                            <input th:field="*{phone}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{phone}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <h5>User Account</h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input th:field="*{username}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{username}">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <input th:field="*{password}" class="form-control">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('employeeCode')}"
+                                 th:errors="*{password}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4">
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            Save
+
+                        </button>
+
+                        <a href="/employees"
+                           class="btn btn-secondary">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

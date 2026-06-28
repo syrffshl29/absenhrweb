@@ -1,0 +1,39 @@
+<div th:fragment="sidebar" class="bg-dark text-white min-vh-100 p-3">
+
+    <h4 class="mb-4">AbsenHR</h4>
+
+    <ul class="nav flex-column">
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/dashboard}">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/employees}">
+                Employee
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/attendance}">
+                Attendance
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/report}">
+                Report
+            </a>
+        </li>
+
+        <li class="nav-item mt-4">
+            <a class="nav-link text-danger" th:href="@{/login}">
+                Logout
+            </a>
+        </li>
+
+    </ul>
+
+</div>

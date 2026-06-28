@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>HR Dashboard</title>
+
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-md-2 p-0">
+
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-10 p-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"> HR Dashboard </h2>
+
+    <a th:href="@{/login}" class="btn btn-outline-danger">
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+    </a>
+    </div>
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+
+                    <h6>Total Employees</h6>
+
+                    <h2 class="text-primary"
+                        th:text="${dashboard.totalEmployees}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h6>Present Today</h6>
+
+                    <h2 class="text-success"
+                        th:text="${dashboard.presentToday}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h6>Late Today</h6>
+
+                    <h2 class="text-warning"
+                        th:text="${dashboard.lateToday}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+
+                    <h6>Absent Today</h6>
+
+                    <h2 class="text-danger"
+                        th:text="${dashboard.absentToday}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white fw-bold">
+            Attendance Overview
+
+        </div>
+
+        <div class="card-body">
+
+            <canvas id="attendanceChart" height="90"></canvas>
+
+        </div>
+        <div class="card-body">
+
+
+            <div class="mt-4"
+                 th:if="${attendanceList != null}">
+
+                <div class="card-header bg-white fw-bold">
+                    Attendance Report
+                </div>
+
+                <div class = table-responsive>
+                    <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:if="${attendanceList == null or #lists.isEmpty(attendanceList)}">
+                        <td colspan="7" class="text-center">
+                            No data available
+                        </td>
+                    </tr>
+                    <tr th:each="report : ${attendanceList}">
+
+                        <td th:text="${report.employeeCode}"></td>
+                        <td th:text="${report.fullName}"></td>
+                        <td th:text="${report.attendanceDate}"></td>
+                        <td th:text="${report.checkInTime}"></td>
+                        <td th:text="${report.checkOutTime}"></td>
+                        <td>
+                            <span class="badge bg-success"
+                                  th:if="${report.status.toString() == 'Present'}">
+                                Present
+                            </span>
+                            <span class="badge bg-warning text-dark"
+                                  th:if="${report.status.toString() == 'Late'}">
+                                Late
+                            </span>
+                            <span class="badge bg-danger"
+                                  th:if="${report.status.toString() == 'Absent'}">
+                                Absent
+                            </span>
+                        </td>
+                        <td th:text="${report.location}"></td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white fw-bold">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    Late Employees
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group">
+
+                        <li class="list-group-item"
+                            th:each="employee : ${dashboard.lateEmployees}"
+                            th:text="${employee}">
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white fw-bold">
+
+                    <i class="bi bi-person-x"></i>
+
+                    Absent Employees
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group">
+
+                        <li class="list-group-item"
+                            th:each="employee : ${dashboard.absentEmployees}"
+                            th:text="${employee}">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+</div>
+
+</div>
+<!-- ================= SCRIPTS CLEAN ================= -->
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    const present = /*[[${dashboard.presentToday}]]*/ 0;
+    const late = /*[[${dashboard.lateToday}]]*/ 0;
+    const absent = /*[[${dashboard.absentToday}]]*/ 0;
+
+    const ctx = document.getElementById("attendanceChart");
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Present", "Late", "Absent"],
+            datasets: [{
+                label: "Employees",
+                data: [present, late, absent]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    /*]]>*/
+</script>
+
+<script>
+    // auto refresh dashboard (optional)
+    if (window.location.pathname === "/dashboard") {
+        setInterval(() => {
+            window.location.reload();
+        }, 15000);
+    }
+</script>
+</body>
+</html>

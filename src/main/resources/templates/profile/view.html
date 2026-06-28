@@ -1,0 +1,24 @@
+<h2>Edit Profile</h2>
+
+<form th:action="@{/profile/update}" method="post">
+
+    <input type="hidden" name="id" th:value="${employee.id}" />
+
+    <label>Nama</label>
+    <input type="text" name="fullName" th:value="${employee.fullName}" />
+
+    <label>Email</label>
+    <input type="text" name="email" th:value="${employee.email}" />
+
+    <label>Phone</label>
+    <input type="text" name="phone" th:value="${employee.phone}" />
+
+    <label>Address</label>
+    <input type="text" name="address" th:value="${employee.address}" />
+
+    <button type="submit">Update</button>
+</form>
+
+<a th:href="@{/profile/edit}" class="btn btn-primary">
+    Edit Profile
+</a>
