@@ -50,4 +50,13 @@ public class ReportController {
 
         return "admin/report";
     }
+    @GetMapping("/late-summary")
+    public String lateSummary(Model model) {
+
+        model.addAttribute(
+                "lateSummary",
+                reportService.getLateSummary());
+
+        return "admin/late-summary";
+    }
 }

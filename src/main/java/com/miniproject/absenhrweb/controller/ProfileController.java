@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 public class ProfileController {
 
@@ -42,14 +43,18 @@ public class ProfileController {
         return "profile/edit";
     }
 
-    @PostMapping("/profile/update")
+    @PostMapping("/profile/edit")
     public String updateProfile(
             @ModelAttribute EmployeeRequestDto dto,
             HttpSession session) {
 
         employeeService.updateProfile(session, dto);
 
-        return "redirect:/profile";
+        // Logout
+        session.invalidate();
+
+        // Login ulang
+        return "redirect:/login";
     }
 }
 

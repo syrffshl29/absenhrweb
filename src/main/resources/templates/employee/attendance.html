@@ -2,244 +2,263 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Attendance</title>
 
-    <link rel="stylesheet"
-          href="/webjars/bootstrap/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .table-custom-rounded {
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-custom-rounded th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-custom-rounded td {
+            padding: 1rem;
+            vertical-align: middle;
+            color: #334155;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .btn-action-large {
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .btn-action-large:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+        .btn-action-large:active {
+            transform: translateY(0);
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body class="overflow-hidden">
 
-<div class="container-fluid">
+<div class="d-flex vh-100 w-100">
 
-    <div class="row">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-        <!-- Sidebar -->
-        <div class="col-md-2 p-0">
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden bg-light">
+
+        <!-- Navbar (Fixed Top) -->
+        <div class="flex-shrink-0" style="z-index: 1030;">
+            <div th:replace="~{fragments/navbar :: navbar}"></div>
         </div>
 
-        <!-- Content -->
-        <div class="col-md-10">
+        <div class="p-4 p-md-5 overflow-auto flex-grow-1 custom-scroll" style="background-color: #f8fafc;">
 
-<div class="d-flex">
-
-    <!-- ================= CONTENT ================= -->
-
-    <div class="flex-grow-1">
-
-        <!-- NAVBAR -->
-
-        <nav class="navbar navbar-light bg-white shadow-sm">
-
-            <div class="container-fluid">
-
-                <span class="navbar-brand fw-bold">
-
-                    Employee Attendance
-
-                </span>
-
-                <span class="fw-bold"
-                      th:text="${dashboard.employeeName}">
-                </span>
-
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="fw-bold text-dark mb-1">Employee Attendance</h3>
+                    <p class="text-muted mb-0" style="font-size: 0.95rem;">Track your daily attendance and history</p>
+                </div>
             </div>
 
-        </nav>
-
-        <div class="container-fluid mt-4">
-
-            <!-- ================= DASHBOARD ================= -->
-
-            <div class="row mb-4">
+            <div class="row g-4 mb-4">
 
                 <div class="col-md-4">
-
-                    <div class="card shadow border-0">
-
-                        <div class="card-body text-center">
-
-                            <h6>Total Attendance</h6>
-
-                            <h2 class="text-primary"
-                                th:text="${dashboard.totalAttendance}">
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="card shadow border-0">
-
-                        <div class="card-body text-center">
-
-                            <h6>Present</h6>
-
-                            <h2 class="text-success"
-                                th:text="${dashboard.totalPresent}">
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="card shadow border-0">
-
-                        <div class="card-body text-center">
-
-                            <h6>Late</h6>
-
-                            <h2 class="text-danger"
-                                th:text="${dashboard.totalLate}">
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ================= CHECK IN ================= -->
-
-            <div class="card shadow border-0 mb-4">
-
-                <div class="card-header fw-bold">
-
-                    Attendance
-
-                </div>
-
-                <div class="card-body">
-
-                    <div class="row">
-
-                        <div class="col-md-8">
-
-                            <form th:action="@{/attendance/checkin}"
-                                  method="post"
-                                  id="checkInForm">
-
-                                <div class="input-group">
-
-                                    <input
-                                            type="hidden"
-                                            id="location"
-                                            name="location">
-
-                                    <button
-                                            class="btn btn-success"
-                                            type="submit">
-
-                                        <i class="bi bi-geo-alt-fill"></i>
-                                        Check In
-
-                                    </button>
-
+                    <div class="card shadow-sm border-0 rounded-4 bg-white stat-card position-relative overflow-hidden h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-muted fw-semibold mb-0 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Total Attendance</h6>
+                                <div class="bg-primary bg-opacity-10 rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-calendar-check text-primary fs-5"></i>
                                 </div>
-
-                            </form>
-
+                            </div>
+                            <h2 class="fw-bold text-dark mb-0" th:text="${dashboard.totalAttendance}">0</h2>
                         </div>
+                        <i class="bi bi-calendar-check position-absolute text-primary opacity-10" style="font-size: 6rem; right: -15px; bottom: -15px; transform: rotate(-15deg);"></i>
+                    </div>
+                </div>
 
-                        <div class="col-md-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 rounded-4 bg-white stat-card position-relative overflow-hidden h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-muted fw-semibold mb-0 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Present</h6>
+                                <div class="bg-success bg-opacity-10 rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-check-circle text-success fs-5"></i>
+                                </div>
+                            </div>
+                            <h2 class="fw-bold text-success mb-0" th:text="${dashboard.totalPresent}">0</h2>
+                        </div>
+                        <i class="bi bi-check-circle position-absolute text-success opacity-10" style="font-size: 6rem; right: -15px; bottom: -15px; transform: rotate(-15deg);"></i>
+                    </div>
+                </div>
 
-                            <form th:action="@{/attendance/checkout}"
-                                  method="post">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 rounded-4 bg-white stat-card position-relative overflow-hidden h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-muted fw-semibold mb-0 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Late</h6>
+                                <div class="bg-warning bg-opacity-10 rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-clock-history text-warning fs-5"></i>
+                                </div>
+                            </div>
+                            <h2 class="fw-bold text-warning mb-0" th:text="${dashboard.totalLate}">0</h2>
+                        </div>
+                        <i class="bi bi-clock-history position-absolute text-warning opacity-10" style="font-size: 6rem; right: -15px; bottom: -15px; transform: rotate(-15deg);"></i>
+                    </div>
+                </div>
 
-                                <button
-                                        class="btn btn-danger w-100"
-                                        type="submit">
+            </div>
 
-                                    <i class="bi bi-box-arrow-left"></i>
-
-                                    Check Out
-
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 rounded-4 bg-white h-100">
+                        <div class="card-body p-4 p-md-5 text-center d-flex flex-column justify-content-center">
+                            <div class="mb-4">
+                                <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-geo-alt-fill fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold">Morning Check In</h5>
+                                <p class="text-muted mb-0" style="font-size: 0.9rem;">Record your arrival time and location.</p>
+                            </div>
+                            <form th:action="@{/attendance/checkin}" method="post" id="checkInForm" class="mt-auto">
+                                <input type="hidden" id="location" name="location">
+                                <button type="submit" class="btn btn-success px-5 py-2 rounded-pill fw-bold shadow-sm btn-action-large d-inline-flex justify-content-center align-items-center gap-2 mx-auto" style="background-color: #10b981; border-color: #10b981;">
+                                    <i class="bi bi-box-arrow-in-right fs-5"></i>
+                                    CHECK IN
                                 </button>
-
                             </form>
-
                         </div>
+                    </div>
+                </div>
 
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 rounded-4 bg-white h-100">
+                        <div class="card-body p-4 p-md-5 text-center d-flex flex-column justify-content-center">
+                            <div class="mb-4">
+                                <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-clock-fill fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold">Evening Check Out</h5>
+                                <p class="text-muted mb-0" style="font-size: 0.9rem;">Record your departure time.</p>
+                            </div>
+                            <form th:action="@{/attendance/checkout}" method="post" class="mt-auto">
+                                <button type="submit" class="btn btn-danger px-5 py-2 rounded-pill fw-bold shadow-sm btn-action-large d-inline-flex justify-content-center align-items-center gap-2 mx-auto" style="background-color: #ef4444; border-color: #ef4444;">
+                                    <i class="bi bi-box-arrow-left fs-5"></i>
+                                    CHECK OUT
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-4 bg-white mb-5">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold text-dark mb-0">Attendance History</h5>
                     </div>
 
-                </div>
+                    <div class="table-responsive table-custom-rounded bg-white">
+                        <table class="table table-borderless align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th class="ps-4">Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                                <th>Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(histories)}">
+                                <td colspan="5" class="text-center text-muted py-5">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-calendar-x text-secondary opacity-50 mb-3" style="font-size: 3rem;"></i>
+                                        <p class="mb-0 fw-medium">You don't have any attendance records yet.</p>
+                                    </div>
+                                </td>
+                            </tr>
 
-            </div>
+                            <tr th:each="history : ${histories}">
+                                <td class="ps-4 fw-medium text-dark" th:text="${history.attendanceDate}"></td>
 
-            <!-- ================= HISTORY ================= -->
+                                <td class="text-muted" th:text="${#temporals.format(history.checkInTime,'HH:mm')}"></td>
 
-            <div class="card shadow border-0">
+                                <td class="text-muted" th:text="${history.checkOutTime != null ? #temporals.format(history.checkOutTime,'HH:mm') : '-'}"></td>
 
-                <div class="card-header fw-bold">
+                                <td>
+                                        <span class="badge rounded-pill bg-success bg-opacity-10 text-success fw-medium border border-success border-opacity-25 px-3"
+                                              th:if="${history.status.toString() == 'Present'}">Present</span>
+                                    <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning fw-medium border border-warning border-opacity-25 px-3"
+                                          th:if="${history.status.toString() == 'Late'}">Late</span>
+                                    <span class="badge rounded-pill bg-danger bg-opacity-10 text-danger fw-medium border border-danger border-opacity-25 px-3"
+                                          th:if="${history.status.toString() == 'Absent'}">Absent</span>
+                                </td>
 
-                    Attendance History
-
-                </div>
-
-                <div class="card-body">
-
-                    <table class="table table-hover table-bordered">
-
-                        <thead class="table-dark">
-
-                        <tr>
-
-                            <th>Date</th>
-                            <th>Check In</th>
-                            <th>Check Out</th>
-                            <th>Status</th>
-                            <th>Location</th>
-
-                        </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                        <tr th:each="history : ${histories}">
-
-                            <td th:text="${history.attendanceDate}"></td>
-
-                            <td th:text="${#temporals.format(history.checkInTime,'HH:mm')}"></td>
-                            <td th:text="${history.checkOutTime != null ?
-                                        #temporals.format(history.checkOutTime,'HH:mm') : '-'}"></td>
-                            <td th:text="${history.status}"></td>
-                            <td th:text="${history.location}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                <td class="text-muted" style="font-size: 0.8rem;" th:text="${history.location}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <div class="pb-5"></div>
+
         </div>
+
     </div>
+
 </div>
-        </div>
-    </div>
-</div>
+
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-
     document.getElementById("checkInForm").addEventListener("submit", function(e){
-
         e.preventDefault();
 
         if(!navigator.geolocation){
@@ -248,28 +267,17 @@
         }
 
         navigator.geolocation.getCurrentPosition(
-
             function(position){
-
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
-
-                document.getElementById("location").value =
-                    latitude + "," + longitude;
-
+                document.getElementById("location").value = latitude + "," + longitude;
                 document.getElementById("checkInForm").submit();
             },
-
             function(error){
-
                 alert("Silakan izinkan akses lokasi terlebih dahulu.");
-
             }
-
         );
-
     });
-
 </script>
 </body>
 </html>

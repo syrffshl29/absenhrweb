@@ -4,6 +4,7 @@ import com.miniproject.absenhrweb.client.DashboardClient;
 import com.miniproject.absenhrweb.client.HrClient;
 import com.miniproject.absenhrweb.dto.response.DashboardSummaryDto;
 import com.miniproject.absenhrweb.dto.response.HrAttendanceResponseDto;
+import com.miniproject.absenhrweb.dto.response.LateSummaryResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,5 +32,10 @@ public class ReportService {
     }
     public List<HrAttendanceResponseDto> getAllAttendanceReport() {
         return hrClient.getAllAttendanceReport();
+    }
+    public List<LateSummaryResponseDto> getLateSummary() {
+
+        return hrClient.getLateSummary();
+
     }
 }

@@ -2,6 +2,7 @@ package com.miniproject.absenhrweb.client;
 
 import com.miniproject.absenhrweb.dto.response.DashboardSummaryDto;
 import com.miniproject.absenhrweb.dto.response.HrAttendanceResponseDto;
+import com.miniproject.absenhrweb.dto.response.LateSummaryResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,5 +25,8 @@ public interface HrClient {
 
     @GetMapping("/hr/attendance/all")
     List<HrAttendanceResponseDto> getAllAttendanceReport();
+
+    @GetMapping("/hr/late-summary")
+    List<LateSummaryResponseDto> getLateSummary();
 }
 

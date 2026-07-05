@@ -2,171 +2,203 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Report</title>
 
-    <link rel="stylesheet"
-          href="/webjars/bootstrap/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .table-custom-rounded {
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-custom-rounded th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-custom-rounded td {
+            padding: 1rem;
+            vertical-align: middle;
+            color: #334155;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
+            border-color: #93c5fd;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body class="overflow-hidden">
 
-<div class="container-fluid">
+<div class="d-flex vh-100 w-100">
 
-    <div class="row">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-        <!-- Sidebar -->
-        <div class="col-md-2 p-0">
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden bg-light">
+
+        <div class="flex-shrink-0" style="z-index: 1030;">
+            <div th:replace="~{fragments/navbar :: navbar}"></div>
         </div>
 
-        <!-- Content -->
-        <div class="col-md-10 mt-4">
+        <div class="p-4 p-md-5 overflow-auto flex-grow-1 custom-scroll" style="background-color: #f8fafc;">
 
-    <h2 class="mb-4">
-        Attendance Report
-    </h2>
+            <div class="mb-4">
+                <h3 class="fw-bold text-dark mb-1">Attendance Report</h3>
+                <p class="text-muted mb-0" style="font-size: 0.95rem;">Filter and export employee attendance logs</p>
+            </div>
 
-    <div class="card shadow-sm">
+            <div class="card shadow-sm border-0 rounded-4 bg-white mb-5">
+                <div class="card-body p-4">
 
-        <div class="card-body">
+                    <form method="get" th:action="@{/report}" class="row g-3 align-items-end">
 
-            <form method="get" th:action="@{/report}">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted fw-medium" style="font-size: 0.85rem;">
+                                Start Date
+                            </label>
+                            <input type="date" name="startDate" class="form-control" th:value="${param.startDate}">
+                        </div>
 
-                <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted fw-medium" style="font-size: 0.85rem;">
+                                End Date
+                            </label>
+                            <input type="date" name="endDate" class="form-control" th:value="${param.endDate}">
+                        </div>
 
-                    <div class="col-md-4">
+                        <div class="col-md-6 d-flex align-items-end gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-primary fw-medium rounded-3 px-4 shadow-sm" style="background-color: #2563eb; border-color: #2563eb;">
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
 
-                        <label class="form-label fw-semibold">
-                            Start Date
-                        </label>
+                            <a th:href="@{/report}" class="btn btn-light fw-medium rounded-3 px-4 border text-muted shadow-sm">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                            </a>
 
-                        <input
-                                type="date"
-                                name="startDate"
-                                class="form-control">
+                            <a class="btn btn-success fw-medium rounded-3 px-4 shadow-sm d-flex align-items-center ms-auto"
+                               th:if="${param.startDate != null and param.endDate != null}"
+                               th:href="@{/attendance/export/excel(startDate=${param.startDate}, endDate=${param.endDate})}"
+                               style="background-color: #10b981; border-color: #10b981;">
+                                <i class="bi bi-file-earmark-excel me-2 fs-5 lh-1"></i> Export Excel
+                            </a>
+                        </div>
+                    </form>
 
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-4 bg-white mb-5">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold text-dark mb-0">Attendance List</h5>
+                        <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill fw-medium" th:if="${attendanceList != null}" th:text="${#lists.size(attendanceList) + ' Records Found'}"></span>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="table-responsive table-custom-rounded bg-white">
+                        <table class="table table-borderless align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th class="ps-4">Employee Code</th>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                                <th>Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(attendanceList)}">
+                                <td colspan="7" class="text-center text-muted py-5">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-calendar-x text-secondary opacity-50 mb-3" style="font-size: 3rem;"></i>
+                                        <p class="mb-0 fw-medium">No attendance data found for the selected dates.</p>
+                                    </div>
+                                </td>
+                            </tr>
 
-                        <label class="form-label fw-semibold">
-                            End Date
-                        </label>
-
-                        <input
-                                type="date"
-                                name="endDate"
-                                class="form-control">
-
-                    </div>
-
-                    <div class="col-md-4 d-flex align-items-end gap-2 flex-wrap">
-                        <button
-                                type="submit"
-                                class="btn btn-primary me-2">
-
-                            <i class="bi bi-search"></i>
-                            Filter
-
-                        </button>
-
-                        <a href="/dashboard"
-                           class="btn btn-secondary">
-
-                            <i class="bi bi-arrow-clockwise"></i>
-                            Reset
-
-                        </a>
-
-                        <a class="btn btn-success"
-                           th:if="${param.startDate != null and param.endDate != null}"
-                           th:href="@{/attendance/export/excel(
-                           startDate=${param.startDate},
-                           endDate=${param.endDate})}">
-
-                            <i class="bi bi-file-earmark-excel"></i>
-                            Export Excel
-
-                        </a>
-
+                            <tr th:each="attendance : ${attendanceList}">
+                                <td class="ps-4">
+                                    <span class="badge bg-light text-dark border px-2 py-1 rounded-2 fw-medium" th:text="${attendance.employeeCode}"></span>
+                                </td>
+                                <td class="fw-bold text-dark" th:text="${attendance.fullName}"></td>
+                                <td class="text-muted" th:text="${attendance.attendanceDate}"></td>
+                                <td class="text-muted fw-medium" th:text="${attendance.checkInTime}"></td>
+                                <td class="text-muted fw-medium" th:text="${attendance.checkOutTime}"></td>
+                                <td>
+                                        <span class="badge rounded-pill bg-success bg-opacity-10 text-success fw-medium border border-success border-opacity-25 px-3"
+                                              th:if="${attendance.status.toString() == 'Present'}">Present</span>
+                                    <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning fw-medium border border-warning border-opacity-25 px-3"
+                                          th:if="${attendance.status.toString() == 'Late'}">Late</span>
+                                    <span class="badge rounded-pill bg-danger bg-opacity-10 text-danger fw-medium border border-danger border-opacity-25 px-3"
+                                          th:if="${attendance.status.toString() == 'Absent'}">Absent</span>
+                                </td>
+                                <td class="text-muted" style="font-size: 0.8rem;" th:text="${attendance.location}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
-
-            </form>
-
-        </div>
-
-        <div class="card shadow-sm mt-4">
-
-            <div class="card-header fw-bold">
-
-                Attendance List
-
             </div>
 
-            <div class="card-body table-responsive">
-
-                <table class="table table-bordered table-hover">
-
-                    <thead class="table-dark">
-
-                    <tr>
-
-                        <th>Employee Code</th>
-                        <th>Employee</th>
-                        <th>Date</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
-                        <th>Status</th>
-                        <th>Location</th>
-
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    <tr th:if="${#lists.isEmpty(attendanceList)}">
-
-                        <td colspan="7" class="text-center">
-
-                            No data
-
-                        </td>
-
-                    </tr>
-
-                    <tr th:each="attendance : ${attendanceList}">
-
-                        <td th:text="${attendance.employeeCode}"></td>
-                        <td th:text="${attendance.fullName}"></td>
-                        <td th:text="${attendance.attendanceDate}"></td>
-                        <td th:text="${attendance.checkInTime}"></td>
-                        <td th:text="${attendance.checkOutTime}"></td>
-                        <td th:text="${attendance.status}"></td>
-                        <td th:text="${attendance.location}"></td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
+            <div class="pb-5"></div>
 
         </div>
 
     </div>
 
 </div>
-    </div>
 
-</div>
-
-
+<!-- Scripts -->
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

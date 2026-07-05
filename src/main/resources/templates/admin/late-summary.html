@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Late Summary</title>
+
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-md-2 p-0">
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-10 mt-4">
+
+            <h2 class="mb-4">
+                Late Summary
+            </h2>
+
+            <div class="card shadow-sm">
+
+                <div class="card-header fw-bold">
+
+                    Employee Late Summary
+
+                </div>
+
+                <div class="card-body table-responsive">
+
+                    <table class="table table-bordered table-hover">
+
+                        <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="70">No</th>
+                            <th>Employee Code</th>
+                            <th>Employee Name</th>
+                            <th width="180">Total Late</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:if="${#lists.isEmpty(lateSummary)}">
+
+                            <td colspan="4"
+                                class="text-center">
+
+                                No data available
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:each="item, stat : ${lateSummary}">
+
+                            <td th:text="${stat.count}"></td>
+
+                            <td th:text="${item.employeeCode}"></td>
+
+                            <td th:text="${item.fullName}"></td>
+
+                            <td class="text-center">
+
+                            <span class="badge rounded-pill bg-danger px-3 py-2"
+                            th:text="${item.lateCount}">
+                            </span>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+<script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

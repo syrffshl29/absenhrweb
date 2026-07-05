@@ -34,35 +34,37 @@ public class EmployeeController {
     }
     @GetMapping
     public String list(
-
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String keyword,
-
             @RequestParam(required = false) String employeeCode,
-
             @RequestParam(required = false) String fullName,
-
             Model model) {
-
-        List<EmployeeResponseDto> employees;
 
         if (keyword != null && !keyword.isBlank()) {
 
-            employees = employeeService.search(keyword);
+            model.addAttribute(
+                    "employees",
+                    employeeService.search(keyword));
 
-        } else if ((employeeCode != null && !employeeCode.isBlank())
-                || (fullName != null && !fullName.isBlank())) {
-
-            employees = employeeService.filter(
-                    employeeCode,
-                    fullName);
-
-        } else {
-
-            employees = employeeService.findAll();
-
+            return "admin/employees";
         }
 
-        model.addAttribute("employees", employees);
+        if ((employeeCode != null && !employeeCode.isBlank())
+                || (fullName != null && !fullName.isBlank())) {
+
+            model.addAttribute(
+                    "employees",
+                    employeeService.filter(employeeCode, fullName));
+
+            return "admin/employees";
+        }
+
+        PageResponseDto<EmployeeResponseDto> employeePage =
+                employeeService.paging(page, size);
+
+        model.addAttribute("employeePage", employeePage);
+        model.addAttribute("employees", employeePage.getContent());
 
         return "admin/employees";
     }
@@ -138,22 +140,6 @@ public class EmployeeController {
                 employeeService.filter(
                         employeeCode,
                         fullName));
-
-        return "admin/employees";
-    }
-    @GetMapping("/paging")
-    public String employeeList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
-
-        PageResponseDto<EmployeeResponseDto> employeePage =
-                employeeService.paging(page, size);
-
-        model.addAttribute("employeePage", employeePage);
-
-        model.addAttribute("employees",
-                employeePage.getContent());
 
         return "admin/employees";
     }

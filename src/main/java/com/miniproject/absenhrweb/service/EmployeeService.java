@@ -59,13 +59,13 @@ public class EmployeeService {
 
         return employeeClient.getProfile(token);
     }
-    public void updateProfile(
+    public EmployeeResponseDto updateProfile(
             HttpSession session,
             EmployeeRequestDto dto) {
 
-        String token =
-                "Bearer " + session.getAttribute("TOKEN");
+        String token = "Bearer " + session.getAttribute("TOKEN");
 
-        employeeClient.updateProfile(token, dto);
+        return employeeClient.updateProfile(token, dto);
     }
 }
+

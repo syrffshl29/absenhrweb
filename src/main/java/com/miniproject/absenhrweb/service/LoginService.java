@@ -21,10 +21,13 @@ public class LoginService {
         String token = authClient.login(request);
 
         session.setAttribute("TOKEN", token);
+        String username = JwtUtil.extractUsername(token);
 
         String role = JwtUtil.extractRole(token);
 
         session.setAttribute("ROLE", role);
+        session.setAttribute("USERNAME", username);
+
 
         return role;
     }

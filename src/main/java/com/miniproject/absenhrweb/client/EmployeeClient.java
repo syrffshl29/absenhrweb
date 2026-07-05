@@ -53,7 +53,7 @@ public interface EmployeeClient {
     EmployeeResponseDto getProfile(
             @RequestHeader("Authorization") String token);
 
-    @PutMapping("/profile")
+    @PutMapping("/profile/update")
     EmployeeResponseDto updateProfile(
             @RequestHeader("Authorization") String token,
             @RequestBody EmployeeRequestDto dto);
